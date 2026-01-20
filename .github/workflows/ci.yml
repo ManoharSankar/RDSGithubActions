@@ -25,12 +25,6 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-      
-      - name: Terraform Destroy (delete DB)
-        run: |
-          terraform destroy -auto-approve \
-            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
-        working-directory: terraform
 
       - name: Terraform Init
         run: terraform init
@@ -41,9 +35,21 @@ jobs:
           terraform plan \
             -var="secret_name=${{secrets.TF_SECRET_NAME}}"
         working-directory: terraform
+      
+      - name: Terraform Destroy (delete DB)
+        run: |
+          terraform destroy -auto-approve \
+            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
+        working-directory: terraform
 
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
+            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
+        working-directory: terraform
+
+      - name: Terraform Destroy (delete DB)
+        run: |
+          terraform destroy -auto-approve \
             -var="secret_name=${{secrets.TF_SECRET_NAME}}"
         working-directory: terraform
