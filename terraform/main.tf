@@ -7,7 +7,7 @@ data "aws_secretsmanager_secret" "db"{
 }
 
 data "aws_secretmanager_secret_version" "db"{
-    secret_id = data.aws_secretmanager_secret.db.id
+    secret_id = data.aws_secretsmanager_secret.db.id
 
 }
 
