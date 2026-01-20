@@ -45,4 +45,8 @@ jobs:
       - name: Wait 10 minutes
         run: sleep 600
 
-      
+      - name: Terraform Destroy (delete DB)
+        run: |
+            terraform destroy -auto-approve \
+            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
+        working-directory: terraform
