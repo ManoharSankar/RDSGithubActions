@@ -33,11 +33,11 @@ jobs:
       - name: Terraform Plan
         run: |
           terraform plan \
-            -var="secret_name=${{"secrets.TF_SECRET_NAME"}}"
+            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
         working-directory: terraform
 
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
-            -var="secret_name=${{"secrets.TF_SECRET_NAME"}}"
+            -var="secret_name=${{secrets.TF_SECRET_NAME}}"
         working-directory: terraform
