@@ -1,0 +1,43 @@
+name: Terraform Deploy (OIDC)
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write     # REQUIRED for OIDC
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-south-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+            -var="secret_name=${{"secrets.TF_SECRET_NAME"}}"
+        working-directory: terraform
+
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve \
+            -var="secret_name=${{"secrets.TF_SECRET_NAME"}}"
+        working-directory: terraform
