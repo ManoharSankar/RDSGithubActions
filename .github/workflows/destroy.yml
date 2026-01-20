@@ -1,7 +1,8 @@
 name: Terraform Destroy
 
 on:
-  workflow_dispatch:   # manual trigger only (SAFE)
+  push:
+    branches: ["main"]   # manual trigger only (SAFE)
 
 permissions:
   id-token: write
